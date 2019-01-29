@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="question">
+  <insert id="create" parameterType = "QuestionVO">
+    INSERT INTO question(questionno, memberno, question_title, question_contents,
+                                 question_thumb, question_file1, question_size1, question_cnt,
+                                 question_replycnt, question_indent, question_grpno, question_ansnum, question_word, rdate)  
+    VALUES((SELECT NVL(MAX(questionno), 0) + 1 as questionno FROM question),
+                #{memberno}, #{question_title}, #{question_contents}, #{question_thumb}, #{question_file1}, #{question_size1}, 0,
+                0, 0, (SELECT NVL(MAX(question_grpno), 0) + 1 as question_grpno FROM question) ,0, #{question_word}, sysdate)
+  </insert>
+  
+  <select id="list" resultType="QuestionVO">
+    SELECT questionno, memberno, question_title, question_contents, 
+              question_thumb, question_file1, question_size1, question_cnt, 
+              question_replycnt, question_indent, question_grpno, question_ansnum, question_word, rdate
+    FROM question
+    ORDER BY rdate DESC
+  </select>
+  
+  <select id="list_by_member" resultType="QuestionVO">
+    SELECT questionno, memberno, question_title, question_contents, 
+          question_thumb, question_file1, question_size1, question_cnt, 
+          question_replycnt, question_indent, question_grpno, question_ansnum, question_word, rdate
+    FROM question
+    WHERE memberno = #{memberno}
+    ORDER BY rdate DESC
+  
+  </select>
+  
+  <select id="total_count" resultType="int">
+    SELECT COUNT(*) as count
+    FROM question
+  </select>
+  
+  <select id="read" resultType="QuestionVO" parameterType="int">
+    SELECT questionno, memberno, question_title, question_contents, 
+              question_thumb, question_file1, question_size1, question_cnt, 
+              question_replycnt, question_indent, question_grpno, question_ansnum, question_word, rdate
+    FROM question
+    WHERE questionno=#{questionno}
+  </select>
+  
+  <update id="update" parameterType="QuestionVO">
+    UPDATE question
+    SET question_title=#{question_title}, question_contents=#{question_contents}, 
+         question_thumb=#{question_thumb}, question_file1=#{question_file1}, 
+         question_size1=#{question_size1}, question_word=#{question_word}
+    WHERE questionno=#{questionno}
+  </update>
+  
+  <delete id="delete" parameterType="int">
+    DELETE FROM question
+    WHERE questionno=#{questionno}
+  </delete>
+  
+   <!-- member별 검색된 레코드 목록 -->
+  <select id="list_by_member_search" resultType="QuestionVO" parameterType="HashMap">
+    SELECT questionno, memberno, question_title, question_contents, 
+              question_thumb, question_file1, question_size1, question_cnt, 
+              question_replycnt, question_indent, question_grpno, question_ansnum, question_word, rdate
+    FROM question
+    <choose>
+      <when test="question_word == null or question_word == ''"> <!-- 검색하지 않는 경우 -->
+        WHERE memberno=#{memberno}
+      </when>
+      <otherwise>
+        WHERE memberno=#{memberno} AND question_word LIKE '%' || #{question_word} || '%'  
+        ORDER BY rdate DESC
+      </otherwise>
+    </choose>
+  </select>
+
+  <!-- member별 검색된 레코드 갯수 -->
+  <select id="search_count" resultType="int" >
+    SELECT COUNT(*) as cnt
+    FROM question
+    <choose>
+      <when test="question_word == null or question_word == ''"> <!-- 검색하지 않는 경우 -->
+        WHERE memberno=#{memberno}
+      </when>
+      <otherwise>
+        WHERE memberno=#{memberno} AND question_word LIKE '%' || #{question_word} || '%'  
+      </otherwise>
+    </choose>
+  </select>
+  
+ <!-- member별 검색된 레코드 목록 + 페이징 -->
+  <select id="list_by_member_search_paging" resultType="QuestionVO" parameterType="HashMap">
+    SELECT questionno, memberno, question_title, question_contents, 
+              question_thumb, question_file1, question_size1, question_cnt, 
+              question_replycnt, question_grpno, question_indent, question_ansnum, question_word, rdate, r
+    FROM (
+              SELECT questionno, memberno, question_title, question_contents, 
+                        question_thumb, question_file1, question_size1, question_cnt, 
+                        question_replycnt, question_grpno, question_indent, question_ansnum, question_word, rdate, rownum as r
+              FROM (
+                        SELECT questionno, memberno, question_title, question_contents, 
+                                  question_thumb, question_file1, question_size1, question_cnt, 
+                                  question_replycnt, question_grpno, question_indent, question_ansnum, question_word, rdate
+                        FROM question
+                        <choose>
+                          <when test="question_word == null or question_word == ''"> <!-- 검색하지 않는 경우 -->
+                            WHERE memberno=#{memberno}
+                          </when>
+                          <otherwise>
+                            WHERE memberno=#{memberno} AND question_word LIKE '%' || #{question_word} || '%'  
+                          </otherwise>
+                        </choose>
+                        ORDER BY question_grpno DESC, question_ansnum ASC
+              )            
+    )
+    WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]> 
+    <!--     WHERE r >= #{startNum} AND r <= #{endNum} -->
+    
+  </select>
+  
+  
+  <!-- ******************** 답변 관련 시작 ******************** -->
+  <!-- 신규 답변을 최우선으로 출력하기위한 답변 순서 조절 -->
+  <update id='update_question_Ansnum' parameterType="QuestionVO">
+    UPDATE question
+    SET question_ansnum = question_ansnum + 1
+    WHERE question_grpno = #{question_grpno} AND question_ansnum > #{question_ansnum}
+  </update>
+   
+  <!-- 답변 --> 
+  <insert id="reply" parameterType="QuestionVO">
+    INSERT INTO question(questionno,
+                                memberno, question_title, question_contents, question_thumb, question_file1, question_size1, 
+                                question_cnt, question_replycnt, rdate, 
+                                question_grpno, question_indent, question_ansnum, question_word)  
+    VALUES((SELECT NVL(MAX(questionno), 0) + 1 as questionno FROM question),
+            #{memberno}, #{question_title}, #{question_contents}, #{question_thumb}, #{question_file1}, #{question_size1}, 
+            #{question_cnt}, #{question_indent}, sysdate,
+            #{question_grpno}, #{question_indent}, #{question_ansnum}, #{question_word})
+  </insert>
+  
+  <!-- ******************** 답변 관련 종료 ******************** -->
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

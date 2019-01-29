@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gallery">
+  <insert id="create" parameterType="GalleryVO"> 
+    INSERT INTO gallery(galleryno, 
+                              memberno, g_title, g_content, g_cnt, thumbs, files, sizes, g_word, rdate)  
+    VALUES((SELECT NVL(MAX(galleryno), 0) + 1 as galleryno FROM gallery), 
+               #{memberno}, #{g_title}, #{g_content}, #{g_cnt}, #{thumbs}, #{files}, #{sizes}, #{g_word}, sysdate)
+  </insert>
+  
+  <select id="list" resultType="GalleryVO">
+    SELECT galleryno,
+              memberno, g_title, g_content, g_cnt, thumbs, files, sizes, g_word, rdate
+    FROM gallery
+    ORDER BY rdate DESC
+  </select>
+  
+  <select id="total_count" resultType="int">
+    SELECT COUNT(*) as count
+    FROM gallery
+  </select>
+  
+  <select id="read" resultType="GalleryVO" parameterType="int">
+    SELECT galleryno,
+              memberno, g_title, g_content, g_cnt, thumbs, files, sizes, g_word, rdate
+    FROM gallery
+    WHERE galleryno=#{galleryno}
+  </select>
+  
+  <update id="update" parameterType="GalleryVO">
+    UPDATE gallery
+    SET g_title=#{g_title}, g_content=#{g_content},
+          thumbs=#{thumbs}, files=#{files}, sizes=#{sizes}, g_word=#{g_word}
+    WHERE galleryno=#{galleryno}
+  </update>
+  
+  <delete id="delete" parameterType="int">
+    DELETE FROM gallery
+    WHERE galleryno=#{galleryno}
+  </delete>
+
+
+</mapper>

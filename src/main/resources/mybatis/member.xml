@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="member"> <!-- 테이블명 사용 -->
+
+<!-- 회원 등록 -->
+  <insert id="create" parameterType = "MemberVO">
+    INSERT INTO member(memberno, m_name, m_nickname, m_email, m_passwd, 
+                                m_age, m_act, rdate)
+    VALUES ((SELECT NVL(MAX(memberno), 0)+1 as memberno FROM member),
+                #{m_name}, #{m_nickname}, #{m_email}, #{m_passwd}, #{m_age}, #{m_act}, sysdate)
+  </insert>
+  
+<!-- 회원 email 중복검사 -->
+  <select id="checkEmail" resultType="int" parameterType="String">
+    SELECT COUNT(m_email) as cnt
+    FROM member
+    WHERE m_email=#{m_email}
+  </select>
+  
+<!-- 회원 nickname 중복검사 -->
+  <select id="checkNickname" resultType="int" parameterType="String">
+    SELECT COUNT(m_nickname) as cnt
+    FROM member
+    WHERE m_nickname=#{m_nickname}
+  </select>
+  
+<!-- 회원 목록 -->
+  <select id="list" resultType = "MemberVO">
+    SELECT memberno, m_name, m_nickname, m_email, m_passwd, 
+              m_age, m_act, rdate
+    FROM member
+    ORDER BY memberno ASC
+  </select>
+  
+<!-- 회원 조회 -->
+  <select id="read" resultType="MemberVO" parameterType="int">
+    SELECT memberno, m_name, m_nickname, m_email, m_passwd, m_age, m_act, rdate
+    FROM member
+    WHERE memberno = #{memberno}
+  </select>
+  
+<!-- 회원 조회 -->
+  <select id="readByEmail" resultType="MemberVO" parameterType="String">
+    SELECT memberno, m_name, m_nickname, m_email, m_passwd, m_age, m_act, rdate
+    FROM member
+    WHERE m_email = #{m_email}
+  </select>
+  
+<!-- 회원 수정 -->
+  <update id="update" parameterType="MemberVO"> 
+    UPDATE member 
+    SET m_name = #{m_name}, m_email = #{m_email}, m_nickname = #{m_nickname}, m_age = #{m_age}, 
+    WHERE memberno = #{memberno}
+  </update>
+  
+<!-- 패스워드 변경 -->
+   <update id="passwd_update" parameterType="HashMap">
+    UPDATE member
+    SET m_passwd = #{m_passwd}
+    WHERE memberno = #{memberno}    
+  </update>  
+  
+<!-- 회원 삭제 -->
+  <delete id="delete" parameterType="int">
+  DELETE FROM member
+  WHERE memberno = #{memberno} 
+  </delete>
+
+<!-- 로그인 -->
+  <select id="login" resultType="int" parameterType="Map">
+    SELECT COUNT(memberno) as cnt
+    FROM member
+    WHERE m_email = #{m_email} AND m_passwd=#{m_passwd}
+  </select>
+  
+  
+</mapper>

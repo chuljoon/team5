@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+  <!-- 등록 -->
+  <insert id="create" parameterType="NoticeVO">
+    INSERT INTO notice(noticeno, title, content, rdate)
+    VALUES((SELECT NVL(MAX(noticeno), 0) + 1 as noticeno FROM notice),
+    #{title}, #{content}, sysdate)
+  </insert>
+  
+  <!-- 목록 -->
+  <select id="list" resultType="NoticeVO">
+    SELECT noticeno, title, content, rdate
+    FROM notice
+    ORDER BY noticeno DESC
+  </select>
+  
+  <!-- 조회 -->
+  <select id="read" resultType="NoticeVO" parameterType="int">
+    SELECT noticeno, title, content, rdate
+    FROM notice
+    WHERE noticeno=#{noticeno}
+  </select>
+  
+  <!-- 수정 -->
+  <update id="update" parameterType="NoticeVO">
+    UPDATE notice
+    SET title=#{title}, content=#{content}
+    WHERE noticeno=#{noticeno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM notice
+    WHERE noticeno=#{noticeno}
+  </delete>
+  
+  <!-- 레코드 개수 -->
+  <select id="cnt" resultType="int" parameterType="HashMap">
+    SELECT COUNT(noticeno) as cnt
+    FROM notice
+  </select>
+  
+  <!-- 페이징 -->
+  <select id="list_paging" resultType="NoticeVO" parameterType="HashMap">
+  SELECT noticeno, title, content, rdate, r
+  FROM (
+           SELECT noticeno, title, content, rdate, rownum as r
+           FROM (
+                    SELECT noticeno, title, content, rdate
+                    FROM notice
+                    ORDER BY noticeno DESC
+              )
+    )
+    WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]>
+  </select>
+
+</mapper>

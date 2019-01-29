@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="expect">
+  <!-- 등록 -->
+  <insert id="create" parameterType="ExpectVO">
+    INSERT INTO expect(expectno, contentsno, content, imgs, thumbs, sizes, rdate)
+    VALUES((SELECT NVL(MAX(expectno), 0) + 1 as expectno FROM expect),
+              #{contentsno}, #{content}, #{imgs}, #{thumbs}, #{sizes}, sysdate)
+  </insert>
+  
+  <!-- 목록 -->
+  <select id="list" resultType="ExpectVO">
+    SELECT expectno, contentsno, content, imgs, thumbs, sizes, rdate
+    FROM expect
+    WHERE contentsno=#{contentsno}
+    ORDER BY expectno DESC
+  </select>
+  
+  <!-- 조회 -->
+  <select id="read" resultType="ExpectVO" parameterType="int">
+    SELECT expectno, contentsno, content, imgs, thumbs, sizes, rdate
+    FROM expect
+    WHERE expectno=#{expectno}
+  </select>
+  
+  <!-- 수정 -->
+  <update id="update" parameterType="ExpectVO">
+    UPDATE expect
+    SET content=#{content}, imgs=#{imgs, jdbcType=VARCHAR}, thumbs=#{thumbs, jdbcType=VARCHAR}, sizes=#{sizes}
+    WHERE expectno=#{expectno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM expect
+    WHERE expectno=#{expectno}
+  </delete>
+
+</mapper>

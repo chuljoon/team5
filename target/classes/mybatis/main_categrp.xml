@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="main_categrp">
+  <insert id="create" parameterType="Main_CategrpVO">
+    INSERT INTO main_categrp(m_categrpno, name, seqno, visible, rdate)
+    VALUES((SELECT NVL(MAX(m_categrpno), 0) + 1 as m_categrpno FROM main_categrp),
+               #{name}, #{seqno}, #{visible}, sysdate)
+  </insert>
+  
+  <!-- 목록 -->
+  <select id="list" resultType="Main_CategrpVO">
+    SELECT m_categrpno, name, seqno, visible, rdate
+    FROM main_categrp
+    ORDER BY seqno ASC
+  </select>
+  
+  <!-- 조회 -->
+  <select id="read" resultType="Main_CategrpVO" parameterType="int">
+    SELECT m_categrpno, name, seqno, visible, rdate
+    FROM main_categrp
+    WHERE m_categrpno =#{m_categrpno}
+  </select>
+  
+  <!-- 수정 -->
+  <update id="update" parameterType="Main_CategrpVO">
+    UPDATE main_categrp
+    SET name=#{name}, seqno=#{seqno}, visible=#{visible}
+    WHERE m_categrpno = #{m_categrpno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM main_categrp
+    WHERE m_categrpno = #{m_categrpno}
+  </delete>
+</mapper>

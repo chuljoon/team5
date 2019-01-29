@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="sub_category">
+  <!-- 등록 -->
+  <insert id="create" parameterType="Sub_CategoryVO">
+    INSERT INTO sub_category(s_categoryno, m_categrpno, title, seqno, visible, ids, rdate)
+    VALUES((SELECT NVL(MAX(s_categoryno), 0) + 1 as s_categoryno FROM sub_category),
+    #{m_categrpno}, #{title}, #{seqno}, #{visible}, #{ids}, sysdate)
+  </insert>
+  
+  <!-- 목록 -->
+  <select id="list" resultType="Categrp_CategoryVO">
+    SELECT c.m_categrpno, c.name,
+              t.s_categoryno, t.m_categrpno, t.title, t.seqno, t.visible, t.ids, t.cnt
+    FROM main_categrp c, sub_category t  
+    WHERE c.m_categrpno = t.m_categrpno
+    ORDER BY c.m_categrpno ASC, t.seqno ASC
+  </select>
+  
+  <!-- main_categrp별 목록 -->
+  <select id="list_by_categrp" resultType="Categrp_CategoryVO" parameterType="int">
+    SELECT c.m_categrpno, c.name,
+              t.s_categoryno, t.m_categrpno, t.title, t.seqno, t.visible, t.ids, t.cnt
+    FROM main_categrp c, sub_category t  
+    WHERE (c.m_categrpno = #{m_categrpno}) AND (c.m_categrpno = t.m_categrpno)
+    ORDER BY c.m_categrpno ASC, t.seqno ASC
+  </select>
+  
+  <!-- 조회 -->
+  <select id="read" resultType="Categrp_CategoryVO" parameterType="int">
+    SELECT c.m_categrpno, c.name,
+              t.s_categoryno, t.m_categrpno, t.title, t.seqno, t.visible, t.ids, t.cnt
+    FROM main_categrp c, sub_category t  
+    WHERE t.s_categoryno=#{s_categoryno} AND c.m_categrpno = t.m_categrpno
+  </select>
+  
+  <!-- 수정 -->
+  <update id="update" parameterType="Sub_CategoryVO">
+    UPDATE sub_category
+    SET title=#{title}, seqno=#{seqno}, visible=#{visible}, ids=#{ids}
+    WHERE s_categoryno=#{s_categoryno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM sub_category 
+    WHERE s_categoryno = #{s_categoryno}
+  </delete>
+  
+  <!-- Count by categrpno -->
+  <select id="count_by_categrp" resultType="int" parameterType="int">
+    SELECT COUNT(*) as cnt
+    FROM sub_category
+    WHERE m_categrpno = #{m_categrpno}  
+  </select>
+  
+  <!-- Delete by categrpno -->
+  <delete id="delete_by_categrp" parameterType="int">
+    DELETE FROM sub_category
+    WHERE m_categrpno = #{m_categrpno}  
+  </delete> 
+  
+  <update id="update_seqno_up" parameterType="int">
+    UPDATE sub_category 
+    SET seqno = seqno - 1
+    WHERE s_categoryno=#{s_categoryno}
+  </update>
+  
+  <update id="update_seqno_down" parameterType="int">
+    UPDATE sub_category 
+    SET seqno = seqno + 1
+    WHERE s_categoryno=#{s_categoryno}
+  </update>
+ 
+</mapper>

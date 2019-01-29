@@ -49,30 +49,14 @@
           <ul class="site-menu js-clone-nav d-none d-md-block">
             <li class="has-children active">
               <a href="${pageContext.request.contextPath}/index.do">Home</a>
-              <ul class="dropdown">
-                <li><a href="#">Menu One</a></li>
-                <li><a href="#">Menu Two</a></li>
-                <li><a href="#">Menu Three</a></li>
-                <li class="has-children">
-                  <a href="#">Sub Menu</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Menu One</a></li>
-                    <li><a href="#">Menu Two</a></li>
-                    <li><a href="#">Menu Three</a></li>
-                  </ul>
-                </li>
-              </ul>
             </li>
             <li class="has-children">
-              <a href="about.html">About</a>
+              <a href="${pageContext.request.contextPath}/contents/list_all_category.do">콘서트</a>
               <ul class="dropdown">
-                <li><a href="#">Menu One</a></li>
-                <li><a href="#">Menu Two</a></li>
-                <li><a href="#">Menu Three</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=1&word=${param.word}&nowPage=1">아이돌</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=2&word=${param.word}&nowPage=1">팬클럽/팬미팅</a></li>
               </ul>
             </li>
-            <li><a href="shop.html">Shop</a></li>
-            <li><a href="#">Catalogue</a></li>
             <li><a href='${pageContext.request.contextPath}/gallery/list.do' >갤러리</a>
             <li class= "has-children"> 
               <a href='${pageContext.request.contextPath}/question/list.do' >Q/A</a>
@@ -81,6 +65,7 @@
                 <li><a href='${pageContext.request.contextPath}/question/list_by_member_search_paging.do?memberno=${sessionScope.memberno}&nowPage=1' >1 : 1 문의</a></li>
               </ul>
             </li>
+            <li><a href='${pageContext.request.contextPath}/notice/list_paging.do?nowPage=1' >공지사항</a></li>
             <%-- <li><a href='${pageContext.request.contextPath}/member/list.do' >회원 리스트</a></li> --%>
           </ul>
         </div>

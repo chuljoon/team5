@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hall">
+  <!-- 등록 -->
+  <insert id="create" parameterType="HallVO">
+    INSERT INTO hall(hallno, title, content, img, thumbs, sizes, map, rdate)
+    VALUES((SELECT NVL(MAX(hallno), 0) + 1 as hallno FROM hall), 
+            #{title}, #{content}, #{img}, #{thumbs}, #{sizes}, #{map}, sysdate)
+  </insert>
+  
+  <!-- 전체 목록 -->
+  <select id="list" resultType="HallVO">
+    SELECT hallno, title, content, img, thumbs, sizes, map, rdate
+    FROM hall
+    ORDER BY hallno DESC
+  </select>
+  
+  <!-- 조회 -->
+  <select id="read" resultType="HallVO" parameterType="int">
+    SELECT hallno, title, content, img, thumbs, sizes, map, rdate
+    FROM hall
+    WHERE hallno=#{hallno}
+  </select>
+  
+  <!-- 수정 -->
+  <update id="update" parameterType="HallVO">
+    UPDATE hall
+    SET title=#{title}, content=#{content}, img=#{img}, thumbs=#{thumbs}, sizes=#{sizes}, map=#{map}
+    WHERE hallno=#{hallno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM hall
+    WHERE hallno=#{hallno}
+  </delete>
+
+</mapper>

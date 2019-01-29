@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="contents">
+  <!-- 등록 -->
+  <insert id="create" parameterType="ContentsVO">
+    INSERT INTO contents(contentsno, s_categoryno, title, title_img, thumbs,
+                                 sizes, passwd, contents, files, file_size, p_date, word, rdate)
+    VALUES((SELECT NVL(MAX(contentsno), 0) + 1 as contentsno FROM contents),
+                #{s_categoryno}, #{title}, #{title_img}, #{thumbs}, #{sizes}, #{passwd}, #{contents}, 
+                #{files}, #{file_size}, #{p_date}, #{word}, sysdate)
+  </insert>
+  
+  <!-- 전체 목록 -->
+  <select id="list_all_category" resultType="ContentsVO">
+    SELECT contentsno, s_categoryno, title, title_img, thumbs, sizes, passwd, contents, files, file_size, p_date, word, rdate
+    FROM contents
+    ORDER BY contentsno DESC
+  </select>
+  
+  <!-- 카테고리별 목록 -->
+  <select id="list_by_category" resultType="ContentsVO" parameterType="int">
+    SELECT contentsno, s_categoryno, title, title_img, thumbs, sizes, passwd, contents, files, file_size, p_date, word, rdate
+    FROM contents
+    WHERE s_categoryno=#{s_categoryno}
+    ORDER BY contentsno DESC
+  </select>
+  
+  <!-- 조회 -->
+  <select id="read" resultType="ContentsVO" parameterType="int">
+    SELECT contentsno, s_categoryno, title, title_img, thumbs, sizes, passwd, contents, files, file_size, p_date, word, rdate
+    FROM contents
+    WHERE contentsno=#{contentsno}
+  </select> 
+  
+  <!-- 수정 -->
+  <update id="update" parameterType="ContentsVO">
+    UPDATE contents
+    SET title=#{title}, contents=#{contents}, title_img=#{title_img}, thumbs=#{thumbs}, sizes=#{sizes},
+                files=#{files}, file_size=#{file_size}, p_date=#{p_date}, word=#{word}
+    WHERE contentsno=#{contentsno}
+  </update>
+  
+  <!-- 삭제 -->
+  <delete id="delete" parameterType="int">
+    DELETE FROM contents
+    WHERE contentsno=#{contentsno}
+  </delete>
+  
+  <!-- 카테고리별 레코드 개수 -->
+  <select id="search_count" resultType="int" parameterType="HashMap">
+    SELECT COUNT(*) as cnt
+    FROM contents
+    <choose>
+      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+        WHERE s_categoryno=#{s_categoryno}
+      </when>
+    <otherwise>
+    WHERE s_categoryno=#{s_categoryno} AND word LIKE '%' || #{word} || '%'
+    </otherwise>
+   </choose>
+  </select>
+  
+  <!-- 페이징 -->
+  <select id="list_by_category_paging" resultType="ContentsVO" parameterType="HashMap">
+    SELECT contentsno, s_categoryno, title, title_img, thumbs, sizes, passwd, contents, files, file_size, p_date, word, rdate, r
+    FROM(
+            SELECT contentsno, s_categoryno, title, title_img, thumbs, sizes, passwd, contents, files, file_size, p_date, word, rdate, rownum as r
+            FROM(
+                    SELECT contentsno, s_categoryno, title, title_img, thumbs, sizes, passwd, contents, files, file_size, p_date, word, rdate
+                    FROM contents
+                    <choose>
+                      <when test="word == null or word == ''"> <!-- 검색하지 않는 경우 -->
+                        WHERE s_categoryno=#{s_categoryno}
+                      </when>
+                      <otherwise>
+                        WHERE s_categoryno=#{s_categoryno} AND word LIKE '%' || #{word} || '%'  
+                      </otherwise>
+                    </choose>               
+                    ORDER BY contentsno DESC
+           )
+    )
+    WHERE <![CDATA[ r >= #{startNum} AND r <= #{endNum} ]]> 
+  </select>
+
+</mapper>

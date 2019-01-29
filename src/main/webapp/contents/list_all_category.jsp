@@ -8,6 +8,10 @@
 <meta charset="UTF-8">
 <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/latest/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"> 
@@ -59,6 +63,23 @@ $(function(){
     <!--  <span class='menu_divide' >│</span> -->
   </ASIDE> 
   <DIV class='menu_line' style='clear: both;'></DIV>
+  
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item active"><a class="nav-link" href="#"> 전체 <span class="sr-only">
+                    (current) </span></a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=1&word=${param.word}&nowPage=1"> 아이돌 </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=2&word=${param.word}&nowPage=1"> 팬클럽/팬미팅 </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=3&word=${param.word}&nowPage=1"> 발라드/R&B </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=4&word=${param.word}&nowPage=1"> 힙합/EDM </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=5&word=${param.word}&nowPage=1"> 페스티벌 </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=6&word=${param.word}&nowPage=1"> 인디/록 </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=7&word=${param.word}&nowPage=1"> 내한 </a></li>
+              <li class="nav-item"><a class="nav-link" href="./list_by_category_paging.do?s_categoryno=8&word=${param.word}&nowPage=1"> 그 외 장르 </a></li>
+            </ul>
+          </div>
+        </nav>
   
   <div style='width: 100%;'>
     <table class="table table-striped" style='width: 100%;'>

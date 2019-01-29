@@ -55,6 +55,12 @@
               <ul class="dropdown">
               <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=1&word=${param.word}&nowPage=1">아이돌</a></li>
               <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=2&word=${param.word}&nowPage=1">팬클럽/팬미팅</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=3&word=${param.word}&nowPage=1">발라드/R&B</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=4&word=${param.word}&nowPage=1">힙합/EDM</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=5&word=${param.word}&nowPage=1">페스티벌</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=6&word=${param.word}&nowPage=1">인디/록</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=7&word=${param.word}&nowPage=1">내한</a></li>
+              <li><a href="${pageContext.request.contextPath}/contents/list_by_category_paging.do?s_categoryno=8&word=${param.word}&nowPage=1">그 외 장르</a></li>
               </ul>
             </li>
             <li><a href='${pageContext.request.contextPath}/gallery/list.do' >갤러리</a>

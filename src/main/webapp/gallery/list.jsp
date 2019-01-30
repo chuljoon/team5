@@ -41,19 +41,20 @@ $(function(){
 <body>
 <DIV class='container' style='width: 100%;'>
 <jsp:include page="/menu/top.jsp" flush='false' />
-<DIV class='content' style='width: 100%;'>     
+<DIV class='content' style='width: 100%;'>
 
-<!--   <ASIDE style='float: left;'>
-    <A href='./list.do'>게시판 목록</A> 
-  </ASIDE> -->
-  <ASIDE style='float: right;'>
-    <A href="javascript:location.reload();">새로고침</A>
-     <span class='menu_divide' >│</span>
-    <a href="${pageContext.request.contextPath }/gallery/create.do">등록</a> 
-  </ASIDE> 
-  
+      <c:choose>
+        <c:when test="${sessionScope.m_email == 'master@gmail.com'}">
+          <ASIDE style='float: right;'>
+            <A href="javascript:location.reload();">새로고침</A> <span class='menu_divide'>│</span>
+            <a href="${pageContext.request.contextPath }/gallery/create.do">등록</a>
+          </ASIDE>
+        </c:when>
+        <c:otherwise></c:otherwise>
+      </c:choose>
 
-  <DIV class='menu_line' style='clear: both;'></DIV>
+
+      <DIV class='menu_line' style='clear: both;'></DIV>
   
   <div style='width: 100%;'>
     <table class="table table-striped" style='width: 100%;'>

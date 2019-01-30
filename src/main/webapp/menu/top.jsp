@@ -28,14 +28,15 @@
                     <a href='${pageContext.request.contextPath}/member/login.do'><span class="icon icon-person" title='로그인'></span></a>
                     <%-- <a href='${pageContext.request.contextPath}/admin/login.do'><span class="icon icon-user-md" title='관리자 로그인'></span></a> --%>
                     </c:when>
-                    <c:when test="${memberVO.m_act == M}">
+                    <c:when test="${sessionScope.m_email == 'master@gmail.com' }">
                     <a href='${pageContext.request.contextPath}/member/list.do'><span class="icon icon-view_list" title='회원 리스트'></span></a>
-                      ${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
+                    ${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
                     </c:when>
                     <c:otherwise>
-                      ${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
-                      <%-- <a href='${pageContext.request.contextPath}/member/login.do'><span class="icon icon-person"></span></a> --%>
+                    ${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
+                    <%-- <a href='${pageContext.request.contextPath}/member/login.do'><span class="icon icon-person"></span></a> --%>
                     </c:otherwise>
+                    
                   </c:choose>
 
               </div> 

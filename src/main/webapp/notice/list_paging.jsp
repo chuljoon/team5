@@ -52,11 +52,17 @@ $(function(){
 <DIV class='content' style='width: 100%;'>
       <form name='frm' id='frm' method="get" action="./list_paging.do">
 
-      <ASIDE style='float: right;'>
-        <A href="javascript:location.reload();">새로고침</A>
-        <span class='menu_divide' >│</span> 
-        <A href='./create.do'>등록</A>
-      </ASIDE>
+      <c:choose>
+        <c:when test="${sessionScope.m_email == 'master@gmail.com' }">
+          <ASIDE style='float: right;'>
+            <A href="javascript:location.reload();">새로고침</A>
+            <span class='menu_divide' >│</span> 
+            <A href='./create.do'>등록</A>
+          </ASIDE>
+        </c:when>
+        <c:otherwise></c:otherwise>
+      </c:choose>
+      
       </form>
 
       <div class='menu_line' style='clear: both;'></div>       

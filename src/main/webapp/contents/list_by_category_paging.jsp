@@ -54,20 +54,31 @@ $(function(){
 <DIV class='container'>
 <jsp:include page="/menu/top.jsp" flush='false' />
 <DIV class='content' style='width: 100%;'>
-      <form name='frm' id='frm' method="get"
-        action="./list_by_category_paging.do">
-        <ASIDE style='float: left;'>
-          <A href='../sub_category/list.do'>게시판 목록</A> > <A
-            href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=1'>${categoryVO.title }</A>
-
-        </ASIDE>
-        <ASIDE style='float: right;'>
-          <A href="javascript:location.reload();">새로고침</A> <span
-            class='menu_divide'>│</span> <A
-            href='./create.do?s_categoryno=${categoryVO.s_categoryno }'>등록</A>
-
-          <input type='hidden' name='s_categoryno' id='s_categoryno' value='${categoryVO.s_categoryno }'>
-           <span class='menu_divide'>│</span>
+      <form name='frm' id='frm' method="get" action="./list_by_category_paging.do">
+      <input type='hidden' name='s_categoryno' id='s_categoryno' value='${categoryVO.s_categoryno }'>
+        <c:choose>
+          <c:when test="${sessionScope.m_email == 'master@gmail.com'}">
+            <ASIDE style='float: left;'>
+              <A href='../sub_category/list.do'>게시판 목록</A> > 
+              <A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=1'>${categoryVO.title }</A>
+            </ASIDE>
+            <ASIDE style='float: right;'>
+              <A href="javascript:location.reload();">새로고침</A> <span class='menu_divide'>│</span> 
+              <A href='./create.do?s_categoryno=${categoryVO.s_categoryno }'>등록</A> <span class='menu_divide'>│</span>
+              <c:choose>
+            <c:when test="${param.word != '' }">
+              <input type='text' name='word' id='word' value='${param.word }' style='width: 35%;'>
+            </c:when>
+            <c:otherwise>
+              <input type='text' name='word' id='word' value='' style='width: 35%;'>
+            </c:otherwise>
+          </c:choose>
+          <button type='submit'>검색</button>
+          <button type='button' onclick="location.href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&nowPage=1'">전체보기</button>
+            </ASIDE>
+          </c:when>
+          <c:otherwise>
+          <ASIDE style='float: right;'>
           <c:choose>
             <c:when test="${param.word != '' }">
               <input type='text' name='word' id='word' value='${param.word }' style='width: 35%;'>
@@ -79,6 +90,9 @@ $(function(){
           <button type='submit'>검색</button>
           <button type='button' onclick="location.href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&nowPage=1'">전체보기</button>
         </ASIDE>
+          </c:otherwise>
+        </c:choose>
+          
       </form>
 
       <div class='menu_line' style='clear: both;'></div>  

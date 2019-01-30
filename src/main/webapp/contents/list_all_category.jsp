@@ -53,16 +53,21 @@ $(function(){
 <body>
 <DIV class='container' style='width: 100%;'>
 <jsp:include page="/menu/top.jsp" flush='false' />
-<DIV class='content' style='width: 100%;'>     
+<DIV class='content' style='width: 100%;'>
+      <c:choose>
+        <c:when test="${sessionScope.m_email == 'master@gmail.com'}">
+          <ASIDE style='float: left;'>
+            <A href='../sub_category/list.do'>게시판 목록</A>
+          </ASIDE>
+          <ASIDE style='float: right;'>
+            <A href="javascript:location.reload();">새로고침</A>
+            <!--  <span class='menu_divide' >│</span> -->
+          </ASIDE>
+        </c:when>
+        <c:otherwise></c:otherwise>
+      </c:choose>
 
-  <ASIDE style='float: left;'>
-    <A href='../sub_category/list.do'>게시판 목록</A> 
-  </ASIDE>
-  <ASIDE style='float: right;'>
-    <A href="javascript:location.reload();">새로고침</A>
-    <!--  <span class='menu_divide' >│</span> -->
-  </ASIDE> 
-  <DIV class='menu_line' style='clear: both;'></DIV>
+      <DIV class='menu_line' style='clear: both;'></DIV>
   
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="collapse navbar-collapse" id="navbarNavDropdown">

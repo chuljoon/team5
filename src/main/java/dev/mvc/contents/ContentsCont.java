@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.member.MemberProcInter;
 import dev.mvc.sub_category.Categrp_CategoryVO;
 import dev.mvc.sub_category.Sub_CategoryProcInter;
 import nation.web.tool.Tool;
@@ -32,6 +34,10 @@ public class ContentsCont {
   @Qualifier("dev.mvc.contents.ContentsProc")
   private ContentsProcInter contentsProc = null;
   
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc = null;
+  
   public ContentsCont() {
     System.out.println("--> ContentsCont created.");
   }
@@ -42,14 +48,18 @@ public class ContentsCont {
    * @return
    */
   @RequestMapping(value = "/contents/create.do", method = RequestMethod.GET)
-  public ModelAndView create(int s_categoryno) {
+  public ModelAndView create(int s_categoryno, HttpSession session) {
     System.out.println("--> create() GET executed");
     ModelAndView mav = new ModelAndView();
 
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);
-
-    mav.setViewName("/contents/create"); // /webapp/contents/create.jsp
+    
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/contents/create"); // /webapp/contents/create.jsp
+    }
 
     return mav;
   }
@@ -62,7 +72,7 @@ public class ContentsCont {
    * @return
    */
   @RequestMapping(value = "/contents/create.do", method = RequestMethod.POST)
-  public ModelAndView create(HttpServletRequest request, ContentsVO contentsVO) {
+  public ModelAndView create(HttpServletRequest request, ContentsVO contentsVO, HttpSession session) {
     // System.out.println("--> create() POST executed");
     ModelAndView mav = new ModelAndView();
     contentsVO.setPasswd("1234"); // 개발중엔 1234로 통일
@@ -178,16 +188,22 @@ public class ContentsCont {
    * @return
    */
   @RequestMapping(value = "/contents/update.do", method = RequestMethod.GET)
-  public ModelAndView update(int contentsno) {
+  public ModelAndView update(int contentsno, HttpSession session) {
     System.out.println("--> update() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/contents/update");
+    
 
     ContentsVO contentsVO = contentsProc.update(contentsno);
     mav.addObject("contentsVO", contentsVO);
 
     Categrp_CategoryVO categoryVO = s_categoryProc.read(contentsVO.getS_categoryno());
     mav.addObject("categoryVO", categoryVO);
+    
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/contents/update");
+    }
 
     return mav;
   }
@@ -266,16 +282,22 @@ public class ContentsCont {
    * @return
    */
   @RequestMapping(value = "/contents/delete.do", method = RequestMethod.GET)
-  public ModelAndView delete(int contentsno, int s_categoryno) {
+  public ModelAndView delete(int contentsno, int s_categoryno, HttpSession session) {
     // System.out.println("--> delete() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/contents/delete"); // /webapp/contents/delete.jsp
+    
 
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);
 
     ContentsVO contentsVO = contentsProc.read(contentsno);
     mav.addObject("contentsVO", contentsVO);
+    
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/contents/delete"); // /webapp/contents/delete.jsp
+    }
 
     return mav;
   }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.contents.ContentsProcInter;
 import dev.mvc.contents.ContentsVO;
+import dev.mvc.member.MemberProcInter;
 import dev.mvc.sub_category.Categrp_CategoryVO;
 import nation.web.tool.Tool;
 import nation.web.tool.Upload;
@@ -31,6 +33,10 @@ public class ExpectCont {
   @Autowired
   @Qualifier("dev.mvc.expect.ExpectProc")
   private ExpectProc expectProc = null;
+  
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc = null;
 
   public ExpectCont() {
     System.out.println("--> ExpectCont created.");
@@ -43,20 +49,26 @@ public class ExpectCont {
    * @return
    */
   @RequestMapping(value = "/expect/create.do", method = RequestMethod.GET)
-  public ModelAndView create(int contentsno) {
+  public ModelAndView create(int contentsno, HttpSession session) {
     System.out.println("--> create() GET executed");
     ModelAndView mav = new ModelAndView();
 
     ContentsVO contentsVO = contentsProc.read(contentsno);
     mav.addObject("contentsVO", contentsVO);
+    
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need_g.jsp"); 
+    } else { 
+      mav.setViewName("/expect/create"); // /webapp/contents/create.jsp
+    }
 
-    mav.setViewName("/expect/create"); // /webapp/contents/create.jsp
+    
 
     return mav;
   }
 
   @RequestMapping(value = "/expect/create.do", method = RequestMethod.POST)
-  public ModelAndView create(HttpServletRequest request, ExpectVO expectVO) {
+  public ModelAndView create(HttpServletRequest request, ExpectVO expectVO, HttpSession session) {
     // System.out.println("--> create() POST executed");
     ModelAndView mav = new ModelAndView();
 
@@ -83,12 +95,14 @@ public class ExpectCont {
     // 파일 전송 코드 종료
     // ------------------------------------------------------------------- 
 
-    int count = expectProc.create(expectVO);
-
-    if (count == 1) {
+    
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need_g.jsp"); 
+    } else { 
+      int count = expectProc.create(expectVO);
       mav.setViewName("redirect:/expect/create_message.jsp?count=" + count + "&contentsno=" + expectVO.getContentsno());
     }
-
+    
     return mav;
   }
 

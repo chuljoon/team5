@@ -55,7 +55,7 @@ public class ContentsCont {
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);
     
-    if (memberProc.isMember(session) == false) {
+    if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
     } else { 
       mav.setViewName("/contents/create"); // /webapp/contents/create.jsp
@@ -199,7 +199,7 @@ public class ContentsCont {
     Categrp_CategoryVO categoryVO = s_categoryProc.read(contentsVO.getS_categoryno());
     mav.addObject("categoryVO", categoryVO);
     
-    if (memberProc.isMember(session) == false) {
+    if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
     } else { 
       mav.setViewName("/contents/update");
@@ -293,7 +293,7 @@ public class ContentsCont {
     ContentsVO contentsVO = contentsProc.read(contentsno);
     mav.addObject("contentsVO", contentsVO);
     
-    if (memberProc.isMember(session) == false) {
+    if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
     } else { 
       mav.setViewName("/contents/delete"); // /webapp/contents/delete.jsp

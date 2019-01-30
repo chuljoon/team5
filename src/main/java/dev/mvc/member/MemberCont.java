@@ -114,7 +114,7 @@ public class MemberCont {
    ModelAndView mav = new ModelAndView();
    mav.setViewName("/member/list"); // webapp/member/list.jsp
 
-   if (memberProc.isMember(session) == false) {
+   if (memberProc.isAdmin(session) == false) {
      mav.setViewName("redirect:/member/login_need.jsp"); 
    } else { 
      mav.setViewName("/member/list"); // webapp/member/list.jsp

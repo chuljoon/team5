@@ -57,7 +57,7 @@ $(function() {
 <div class="bg-light py-3">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 mb-0"><a href="../sub_category/list.do'">게시판 목록</a> 
+          <div class="col-md-12 mb-0"><a href="../sub_category/list.do">게시판 목록</a> 
           <span class="mx-2 mb-0">/</span> 
           <strong class="text-black"><A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=1'>${categoryVO.title }</A></strong></div>
         </div>

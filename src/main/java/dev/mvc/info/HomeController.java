@@ -33,8 +33,7 @@ public class HomeController {
                             method = RequestMethod.GET)
   public ModelAndView home3() {
     ModelAndView mav = new ModelAndView();
-   
-    mav.setViewName("/index"); // /webapp/index.jsp   
+    mav.setViewName("/index"); // /webapp/index.jsp
 
     return mav;
   } 

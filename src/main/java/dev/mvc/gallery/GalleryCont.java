@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dev.mvc.gallery.FileVO;
+import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import nation.web.tool.Tool;
 import nation.web.tool.Upload;
 
@@ -36,7 +39,9 @@ public class GalleryCont {
   @Qualifier("dev.mvc.gallery.GalleryProc")
   private GalleryProcInter galleryProc = null;
 
-  
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc = null;
   
   /**
    * 갤러리 등록 폼
@@ -44,11 +49,19 @@ public class GalleryCont {
    * @return
    */
   @RequestMapping(value = "/gallery/create.do", method = RequestMethod.GET)
-  public ModelAndView create() {
+  public ModelAndView create(HttpSession session) {
     System.out.println("--> create() GET executed");
     ModelAndView mav = new ModelAndView();
     
-    mav.setViewName("/gallery/create"); // /webapp/gallery/create.jsp
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("/member/login_need.jsp");
+    } else {
+      mav.setViewName("/gallery/create"); // /webapp/gallery/create.jsp
+    }
+    
 
     return mav;
   }
@@ -178,7 +191,7 @@ public class GalleryCont {
   
 //ZIP 압축 후 파일 다운로드
  @RequestMapping(value = "/gallery/download.do", method = RequestMethod.GET)
- public ModelAndView download(HttpServletRequest request, int galleryno) {
+ public ModelAndView download(HttpServletRequest request, int galleryno, HttpSession session) {
    ModelAndView mav = new ModelAndView();
 
    GalleryVO galleryVO = galleryProc.read(galleryno);
@@ -241,8 +254,16 @@ public class GalleryCont {
      e.printStackTrace();
    }
 
-   // download 서블릿 연결
-   mav.setViewName("redirect:/download?dir=" + dir + "&filename=" + zip);
+   int memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("/member/login_need_g.jsp");
+   } else {
+  // download 서블릿 연결
+     mav.setViewName("redirect:/download?dir=" + dir + "&filename=" + zip);
+   }
+   
 
    return mav;
  }
@@ -253,9 +274,17 @@ public class GalleryCont {
   * @return
   */
  @RequestMapping(value = "/gallery/update.do", method = RequestMethod.GET)
- public ModelAndView update(int galleryno) {
+ public ModelAndView update(int galleryno, HttpSession session) {
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/gallery/update"); // /webapp/contents/update.jsp
+   int memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("/member/login_need_g.jsp");
+   } else {
+     mav.setViewName("/gallery/update"); // /webapp/contents/update.jsp
+   }
+   
 
    GalleryVO galleryVO = galleryProc.read(galleryno);
    mav.addObject("galleryVO", galleryVO);
@@ -393,10 +422,18 @@ public class GalleryCont {
   * @return
   */
  @RequestMapping(value = "/gallery/delete.do", method = RequestMethod.GET)
- public ModelAndView delete(int galleryno) {
+ public ModelAndView delete(int galleryno, HttpSession session) {
    // System.out.println("--> delete() GET executed");
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/gallery/delete"); // /webapp/contents/delete.jsp
+   int memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("/member/login_need_g.jsp");
+   } else {
+     mav.setViewName("/gallery/delete"); // /webapp/contents/delete.jsp
+   }
+   
 
 /*   Categrp_CategoryVO categoryVO = categoryProc.read(categoryno);
    mav.addObject("categoryVO", categoryVO);*/

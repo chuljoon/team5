@@ -44,9 +44,22 @@ public class MemberProc implements MemberProcInter {
     
     String m_email = (String)session.getAttribute("m_email");
     
-    if (m_email != null){
+    if (m_email != null) {
       sw = true;
     }
+    return sw;
+  }
+  
+  @Override
+  public boolean isAdmin(HttpSession session) {
+    boolean sw = false;
+    String m_email = (String)session.getAttribute("m_email");
+    String m_act = (String)session.getAttribute("m_act");
+    
+    if (m_email != null && m_act.equals("M")) {
+      sw = true;
+    }
+//    System.out.println("sw: " + sw);
     return sw;
   }
 

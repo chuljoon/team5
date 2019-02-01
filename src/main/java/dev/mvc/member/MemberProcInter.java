@@ -34,6 +34,13 @@ public interface MemberProcInter {
   public boolean isMember(HttpSession session); 
   
   /**
+   * 로그인된 관리자 계정인지 검사
+   * @param request
+   * @return true: 관리자
+   */
+  public boolean isAdmin(HttpSession session); 
+  
+  /**
    * 회원 전체 목록
    * @return
    */

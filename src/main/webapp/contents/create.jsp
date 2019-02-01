@@ -71,9 +71,10 @@ $(function() {
             <FORM name='frm' method='POST' action='./create.do'
                        enctype="multipart/form-data" class="form-horizontal">
                
-             <input type='hidden' name='s_categoryno' id='s_categoryno' value='${categoryVO.s_categoryno }'>
-              
-              <div class="p-3 p-lg-5 border">
+             <input type='hidden' name='s_categoryno' id='s_categoryno' value='${categoryVO.s_categoryno }'> 
+
+                
+                <div class="p-3 p-lg-5 border">
                 <div class="form-group row">
                    <div class="col-md-11">
                   <label for="title" class="text-black">공연명</label>

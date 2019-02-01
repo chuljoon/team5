@@ -3,6 +3,8 @@ package dev.mvc.main_categrp;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.sub_category.Sub_CategoryProcInter;
 
 
@@ -28,6 +32,10 @@ public class Main_CategrpCont {
   @Qualifier("dev.mvc.sub_category.Sub_CategoryProc")
   private Sub_CategoryProcInter s_categoryProc = null;
   
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc = null;
+  
   public Main_CategrpCont() {
     System.out.println("--> Main_CategrpCont created.");
   }
@@ -38,10 +46,17 @@ public class Main_CategrpCont {
    */
   // http://localhost:9090/info/main_categrp/create.do
   @RequestMapping(value="/main_categrp/create.do", method=RequestMethod.GET)
-  public ModelAndView create() {
+  public ModelAndView create(HttpSession session) {
     ModelAndView mav = new ModelAndView();
-
-    mav.setViewName("/main_categrp/create");
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/main_categrp/create");
+    }
+    
    
     return mav;
   }
@@ -65,12 +80,21 @@ public class Main_CategrpCont {
    */
   //http://localhost:9090/info/m_categrp/list.do
   @RequestMapping(value="/main_categrp/list.do", method=RequestMethod.GET)
-  public ModelAndView list() {
+  public ModelAndView list(HttpSession session) {
     ModelAndView mav = new ModelAndView();
     
     List<Main_CategrpVO> list = m_categrpProc.list();
     mav.addObject("list", list);
-    mav.setViewName("/main_categrp/list");
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/main_categrp/list");
+    }
+    
     
     return mav;
   }

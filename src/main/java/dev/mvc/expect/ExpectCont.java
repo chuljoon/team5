@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import dev.mvc.contents.ContentsProcInter;
 import dev.mvc.contents.ContentsVO;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.sub_category.Categrp_CategoryVO;
 import nation.web.tool.Tool;
 import nation.web.tool.Upload;
@@ -56,6 +57,9 @@ public class ExpectCont {
     ContentsVO contentsVO = contentsProc.read(contentsno);
     mav.addObject("contentsVO", contentsVO);
     
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
     if (memberProc.isMember(session) == false) {
       mav.setViewName("redirect:/member/login_need_g.jsp"); 
     } else { 
@@ -95,7 +99,9 @@ public class ExpectCont {
     // 파일 전송 코드 종료
     // ------------------------------------------------------------------- 
 
-    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
     if (memberProc.isMember(session) == false) {
       mav.setViewName("redirect:/member/login_need_g.jsp"); 
     } else { 

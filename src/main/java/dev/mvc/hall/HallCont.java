@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.sub_category.Categrp_CategoryVO;
 import nation.web.tool.Tool;
 import nation.web.tool.Upload;
@@ -26,6 +29,10 @@ public class HallCont {
   @Autowired
   @Qualifier("dev.mvc.hall.HallProc")
   private HallProcInter hallProc = null;
+  
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc = null;
 
   public HallCont() {
     System.out.println("--> HallCont created.");
@@ -37,11 +44,19 @@ public class HallCont {
    * @return
    */
   @RequestMapping(value = "/hall/create.do", method = RequestMethod.GET)
-  public ModelAndView create() {
+  public ModelAndView create(HttpSession session) {
     System.out.println("--> create() GET executed");
     ModelAndView mav = new ModelAndView();
-
-    mav.setViewName("/hall/create"); // /webapp/hall/create.jsp
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/hall/create"); // /webapp/hall/create.jsp
+    }
+    
 
     return mav;
   }
@@ -126,10 +141,18 @@ public class HallCont {
    * @return
    */
   @RequestMapping(value = "/hall/update.do", method = RequestMethod.GET)
-  public ModelAndView update(int hallno) {
+  public ModelAndView update(int hallno, HttpSession session) {
     System.out.println("--> update() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/hall/update"); // /webapp/hall/update.jsp
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/hall/update"); // /webapp/hall/update.jsp
+    }
+    
 
     HallVO hallVO = hallProc.update(hallno);
     mav.addObject("hallVO", hallVO);
@@ -186,10 +209,18 @@ public class HallCont {
   }
   
   @RequestMapping(value = "/hall/delete.do", method = RequestMethod.GET)
-  public ModelAndView delete(int hallno) {
+  public ModelAndView delete(int hallno, HttpSession session) {
     // System.out.println("--> delete() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/hall/delete");
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/hall/delete");
+    }
+   
 
     HallVO hallVO = hallProc.read(hallno);
     mav.addObject("hallVO", hallVO);

@@ -18,7 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.hall.HallProcInter;
+import dev.mvc.hall.HallVO;
 import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.sub_category.Categrp_CategoryVO;
 import dev.mvc.sub_category.Sub_CategoryProcInter;
 import nation.web.tool.Tool;
@@ -38,6 +41,10 @@ public class ContentsCont {
   @Qualifier("dev.mvc.member.MemberProc")
   private MemberProcInter memberProc = null;
   
+  @Autowired
+  @Qualifier("dev.mvc.hall.HallProc")
+  private HallProcInter hallProc = null;
+  
   public ContentsCont() {
     System.out.println("--> ContentsCont created.");
   }
@@ -55,12 +62,17 @@ public class ContentsCont {
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);
     
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+//    System.out.println("m_act: " + memberVO.getM_act());
+//    System.out.println("m_act: " + memberVO.getM_name());
+    
     if (memberProc.isAdmin(session) == false) {
-      mav.setViewName("redirect:/member/login_need.jsp"); 
-    } else { 
+      mav.setViewName("/member/login_need.jsp");
+    } else {
       mav.setViewName("/contents/create"); // /webapp/contents/create.jsp
     }
-
     return mav;
   }
 
@@ -127,9 +139,15 @@ public class ContentsCont {
    * @return
    */
   @RequestMapping(value = "/contents/list_all_category.do", method = RequestMethod.GET)
-  public ModelAndView list() {
+  public ModelAndView list(HttpSession session) {
     ModelAndView mav = new ModelAndView();
-
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    System.out.println("list_all_category에서의 memberno: " + memberVO.getMemberno());
+    System.out.println("list_all_category에서의 m_act: " + memberVO.getM_act());
+    
     List<ContentsVO> list = contentsProc.list_all_category();
     mav.addObject("list", list);
 
@@ -199,6 +217,9 @@ public class ContentsCont {
     Categrp_CategoryVO categoryVO = s_categoryProc.read(contentsVO.getS_categoryno());
     mav.addObject("categoryVO", categoryVO);
     
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
     if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
     } else { 
@@ -293,6 +314,10 @@ public class ContentsCont {
     ContentsVO contentsVO = contentsProc.read(contentsno);
     mav.addObject("contentsVO", contentsVO);
     
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+
     if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
     } else { 
@@ -372,7 +397,7 @@ public class ContentsCont {
    * @return
    */
   @RequestMapping(value = "/contents/list_by_category_paging.do", method = RequestMethod.GET)
-  public ModelAndView list_by_category_paging(
+  public ModelAndView list_by_category_paging(HttpSession session,
       @RequestParam(value = "s_categoryno") int s_categoryno,
       @RequestParam(value="word", defaultValue="") String word,
       @RequestParam(value = "nowPage", defaultValue = "1") int nowPage) {
@@ -396,7 +421,11 @@ public class ContentsCont {
     // 레코드 갯수
     int search_count = contentsProc.search_count(hashMap);
     mav.addObject("search_count", search_count);
-
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);
 

@@ -112,7 +112,6 @@ public class MemberCont {
  public ModelAndView list(HttpSession session){
    // System.out.println("--> create() GET called.");
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/member/list"); // webapp/member/list.jsp
 
    if (memberProc.isAdmin(session) == false) {
      mav.setViewName("redirect:/member/login_need.jsp"); 
@@ -131,11 +130,16 @@ public class MemberCont {
   * @return
   */
  @RequestMapping(value="/member/read.do", method=RequestMethod.GET)
- public ModelAndView read(int memberno){
+ public ModelAndView read(int memberno, HttpSession session){
    // System.out.println("--> read(int memberno) GET called.");
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/member/read"); // webapp/member/read.jsp
    
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("redirect:/member/login_need_g.jsp"); 
+   } else { 
+     mav.setViewName("/member/read"); // webapp/member/read.jsp
+   }
+
    MemberVO memberVO = memberProc.read(memberno);
    mav.addObject("memberVO", memberVO);
    
@@ -170,10 +174,15 @@ public class MemberCont {
   * @return
   */
  @RequestMapping(value="/member/passwd_update.do", method=RequestMethod.GET)
- public ModelAndView passwd_update(){
+ public ModelAndView passwd_update(HttpSession session){
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/member/passwd_update"); // webapp/member/passwd_update.jsp
    
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("redirect:/member/login_need_g.jsp"); 
+   } else { 
+     mav.setViewName("/member/passwd_update"); // webapp/member/passwd_update.jsp
+   }
+
    // mav.addObject("memberno", memberno);
    
    return mav;
@@ -196,6 +205,7 @@ public class MemberCont {
    
    // String m_email = "test1@gmail.com";
    String m_email = (String)session.getAttribute("m_email"); // session
+
    // int memberno = 1;
    int memberno = (Integer)session.getAttribute("memberno"); // session
    
@@ -221,10 +231,15 @@ public class MemberCont {
   * @return
   */
  @RequestMapping(value="/member/delete.do", method=RequestMethod.GET)
- public ModelAndView delete(int memberno){
+ public ModelAndView delete(int memberno, HttpSession session){
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/member/delete"); // webapp/member/delete.jsp
    
+   if (memberProc.isAdmin(session) == false) {
+     mav.setViewName("redirect:/member/login_need.jsp"); 
+   } else { 
+     mav.setViewName("/member/delete"); // webapp/member/delete.jsp
+   }
+
    MemberVO memberVO = memberProc.read(memberno);
    mav.addObject("memberVO", memberVO);
    
@@ -310,7 +325,7 @@ public class MemberCont {
  public ModelAndView login(HttpServletRequest request, 
                                       HttpServletResponse response,
                                       HttpSession session,
-                                      String m_email, 
+                                      String m_email,
                                       @RequestParam(value="m_email_save", defaultValue="") String m_email_save,
                                       String m_passwd,
                                       @RequestParam(value="m_passwd_save", defaultValue="") String m_passwd_save){
@@ -325,6 +340,7 @@ public class MemberCont {
 
      session.setAttribute("memberno",  old_memberVO.getMemberno()); // session ³»ºÎ °´Ã¼
      session.setAttribute("m_email", m_email);
+     session.setAttribute("m_act", old_memberVO.getM_act());
      session.setAttribute("m_passwd", m_passwd);
      session.setAttribute("m_name", old_memberVO.getM_name());
      

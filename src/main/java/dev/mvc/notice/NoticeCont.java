@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 import dev.mvc.notice.NoticeVO;
 
 @Controller
@@ -22,6 +25,10 @@ public class NoticeCont {
   @Autowired
   @Qualifier("dev.mvc.notice.NoticeProc")
   private NoticeProcInter noticeProc = null;
+  
+  @Autowired
+  @Qualifier("dev.mvc.member.MemberProc")
+  private MemberProcInter memberProc = null;
 
   public NoticeCont() {
     System.out.println("--> NoticeCont created.");
@@ -33,11 +40,18 @@ public class NoticeCont {
    * @return
    */
   @RequestMapping(value = "/notice/create.do", method = RequestMethod.GET)
-  public ModelAndView create() {
+  public ModelAndView create(HttpSession session) {
     System.out.println("--> create() GET executed");
     ModelAndView mav = new ModelAndView();
-
-    mav.setViewName("/notice/create");
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/notice/create");
+    }
 
     return mav;
   }
@@ -97,11 +111,19 @@ public class NoticeCont {
    * @return
    */
   @RequestMapping(value = "/notice/update.do", method = RequestMethod.GET)
-  public ModelAndView update(int noticeno) {
+  public ModelAndView update(int noticeno, HttpSession session) {
     System.out.println("--> update() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/notice/update");
-
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/notice/update");
+    }
+    
     NoticeVO noticeVO = noticeProc.update(noticeno);
     mav.addObject("noticeVO", noticeVO);
 
@@ -131,10 +153,18 @@ public class NoticeCont {
    * @return
    */
   @RequestMapping(value = "/notice/delete.do", method = RequestMethod.GET)
-  public ModelAndView delete(int noticeno) {
+  public ModelAndView delete(int noticeno, HttpSession session) {
     // System.out.println("--> delete() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/notice/delete"); // /webapp/notice/delete.jsp
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isAdmin(session) == false) {
+      mav.setViewName("redirect:/member/login_need.jsp"); 
+    } else { 
+      mav.setViewName("/notice/delete"); // /webapp/notice/delete.jsp
+    }
 
     NoticeVO noticeVO = noticeProc.read(noticeno);
     mav.addObject("noticeVO", noticeVO);

@@ -32,7 +32,7 @@ public class HomeController {
   @RequestMapping(value = "/index.do", 
                             method = RequestMethod.GET)
   public ModelAndView home3() {
-    ModelAndView mav = new ModelAndView();
+    ModelAndView mav = new ModelAndView();    
     mav.setViewName("/index"); // /webapp/index.jsp
 
     return mav;

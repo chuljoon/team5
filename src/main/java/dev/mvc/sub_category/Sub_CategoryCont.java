@@ -20,6 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dev.mvc.main_categrp.Main_CategrpProcInter;
 import dev.mvc.main_categrp.Main_CategrpVO;
+import dev.mvc.member.MemberProcInter;
+import dev.mvc.member.MemberVO;
 
 @Controller
 public class Sub_CategoryCont {
@@ -41,8 +43,9 @@ public class Sub_CategoryCont {
    * @return
    */
   @RequestMapping(value = "/sub_category/create.do", method = RequestMethod.GET)
-  public ModelAndView create() {
+  public ModelAndView create( ) {
     ModelAndView mav = new ModelAndView();
+
     mav.setViewName("/sub_category/create"); // /webapp/category/create.jsp
 
     return mav;
@@ -85,14 +88,13 @@ public class Sub_CategoryCont {
    */
 
   @RequestMapping(value = "/sub_category/list.do", method = RequestMethod.GET)
-  public ModelAndView list() {
+  public ModelAndView list( ) {
     ModelAndView mav = new ModelAndView();
 
     List<Main_CategrpVO> categrp_list = m_categrpProc.list();
     mav.addObject("categrp_list", categrp_list);
-    
-    mav.setViewName("/sub_category/list"); // /webapp/category/list.jsp
 
+    mav.setViewName("/sub_category/list"); // /webapp/category/list.jsp
     return mav;
   }
 

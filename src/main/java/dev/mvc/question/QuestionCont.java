@@ -42,10 +42,13 @@ public class QuestionCont {
     // System.out.println("--> create() GET executed");
     ModelAndView mav = new ModelAndView();
     
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
     if (memberProc.isMember(session) == false) {
       mav.setViewName("redirect:/member/login_need_g.jsp"); 
     } else { 
-      mav.setViewName("/question/create"); // webapp/question/create.jsp
+      mav.setViewName("/question/create"); // /webapp/notice/delete.jsp
     }
 
     return mav;
@@ -101,10 +104,18 @@ public class QuestionCont {
   }
   
   @RequestMapping(value = "/question/list.do", method = RequestMethod.GET)
-  public ModelAndView list() {
+  public ModelAndView list(HttpSession session) {
     System.out.println("--> list() GET called.");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/question/list"); // webapp/question/list.jsp
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need_g.jsp"); 
+    } else { 
+      mav.setViewName("/question/list"); // /webapp/question/list.jsp
+    }
 
     List<QuestionVO> list = questionProc.list();
     mav.addObject("list", list);
@@ -114,7 +125,7 @@ public class QuestionCont {
   
 //http://localhost:9090/info/question/list_by_member.do?memberno=1
  @RequestMapping(value = "/question/list_by_member.do", method = RequestMethod.GET)
- public ModelAndView list_by_member(int memberno) {
+ public ModelAndView list_by_member(int memberno, HttpSession session) {
    ModelAndView mav = new ModelAndView();
    
    MemberVO memberVO = memberProc.read(memberno);
@@ -122,17 +133,29 @@ public class QuestionCont {
 
    List<QuestionVO> list = questionProc.list_by_member(memberno);
    mav.addObject("list", list);
-
-   mav.setViewName("/question/list_by_member"); // /webapp/question/list_by_member.jsp
+   
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("redirect:/member/login_need_g.jsp"); 
+   } else { 
+     mav.setViewName("/question/list_by_member"); // /webapp/question/list_by_member.jsp
+   }
 
    return mav;
  }
   
   @RequestMapping(value = "/question/read.do", method = RequestMethod.GET)
-  public ModelAndView read(int questionno) {
+  public ModelAndView read(int questionno, HttpSession session) {
     System.out.println("--> read() GET executed");
     ModelAndView mav = new ModelAndView();
-    mav.setViewName("/question/read"); // /webapp/blog/read.jsp
+    
+    int memberno = (Integer)session.getAttribute("memberno");
+    MemberVO memberVO = memberProc.read(memberno);
+    mav.addObject("memberVO", memberVO);
+    if (memberProc.isMember(session) == false) {
+      mav.setViewName("redirect:/member/login_need_g.jsp"); 
+    } else { 
+      mav.setViewName("/question/read"); // /webapp/blog/read.jsp
+    }
 
     QuestionVO questionVO = questionProc.read(questionno);
     mav.addObject("questionVO", questionVO);
@@ -142,10 +165,19 @@ public class QuestionCont {
   
 //http://localhost:9090/info/question/update.do
  @RequestMapping(value = "/question/update.do", method = RequestMethod.GET)
- public ModelAndView update(int questionno) {
+ public ModelAndView update(int questionno, HttpSession session) {
    System.out.println("--> update() GET executed");
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/question/update"); // /webapp/question/update.jsp
+   
+   int memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isAdmin(session) == false) {
+     mav.setViewName("redirect:/member/login_need.jsp"); 
+   } else { 
+     mav.setViewName("/question/update"); // /webapp/question/update.jsp
+   }
+   
 
    QuestionVO questionVO = questionProc.upeate(questionno);
    mav.addObject("questionVO", questionVO);
@@ -209,10 +241,19 @@ public class QuestionCont {
  }
  
  @RequestMapping(value = "/question/delete.do", method = RequestMethod.GET)
- public ModelAndView delete(int questionno) {
+ public ModelAndView delete(int questionno, HttpSession session) {
    // System.out.println("--> delete() GET executed");
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/question/delete"); // /webapp/question/delete.jsp
+   
+   int memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isAdmin(session) == false) {
+     mav.setViewName("redirect:/member/login_need.jsp"); 
+   } else { 
+     mav.setViewName("/question/delete"); // /webapp/question/delete.jsp
+   }
+   
 
    QuestionVO questionVO = questionProc.read(questionno);
    mav.addObject("questionVO", questionVO);
@@ -290,14 +331,22 @@ public class QuestionCont {
   * @return
   */
  @RequestMapping(value = "/question/list_by_member_search.do", method = RequestMethod.GET)
- public ModelAndView list_by_category_search(int memberno, String question_word) {
+ public ModelAndView list_by_category_search(int memberno, String question_word, HttpSession session) {
    // System.out.println("--> list_by_member(int memberno, String question_word) GET called.");
    ModelAndView mav = new ModelAndView();
    // mav.setViewName("/question/list_by_memberno"); //
    // webapp/question/list_by_memberno.jsp
 
    // 검색 기능 추가, webapp/question/list_by_member_search.jsp
-   mav.setViewName("/question/list_by_member_search");
+   memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("redirect:/member/login_need_g.jsp"); 
+   } else { 
+     mav.setViewName("/question/list_by_member_search");
+   }
+   
 
    // 숫자와 문자열 타입을 저장해야함으로 Obejct 사용
    HashMap<String, Object> hashMap = new HashMap<String, Object>();
@@ -315,8 +364,6 @@ public class QuestionCont {
    int search_count = questionProc.search_count(hashMap);
    mav.addObject("search_count", search_count);
 
-   MemberVO memberVO = memberProc.read(memberno);
-   mav.addObject("memberVO", memberVO);
 
    // mav.addObject("question_word", question_word);
 
@@ -343,7 +390,15 @@ public class QuestionCont {
    ModelAndView mav = new ModelAndView();
    
    // 검색 기능 추가,  /webapp/question/list_by_member_search_paging.jsp
-   mav.setViewName("/question/list_by_member_search_paging"); // webapp/question/create.jsp 
+   memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isMember(session) == false) {
+     mav.setViewName("redirect:/member/login_need_g.jsp"); 
+   } else { 
+     mav.setViewName("/question/list_by_member_search_paging"); // webapp/question/create.jsp 
+   }
+   
 
    // 숫자와 문자열 타입을 저장해야함으로 Obejct 사용
    HashMap<String, Object> hashMap = new HashMap<String, Object>();
@@ -363,9 +418,6 @@ public class QuestionCont {
    // 검색된 레코드 갯수
    int search_count = questionProc.search_count(hashMap);
    mav.addObject("search_count", search_count);
- 
-   MemberVO memberVO = memberProc.read(memberno);
-   mav.addObject("memberVO", memberVO);
    
    mav.addObject("question_word", question_word);
  
@@ -388,12 +440,21 @@ public class QuestionCont {
  }
  
  @RequestMapping(value="/question/reply.do", method=RequestMethod.GET)
- public ModelAndView reply(QuestionVO questionVO){
+ public ModelAndView reply(QuestionVO questionVO, HttpSession session){
    // System.out.println("--> reply() GET called.");
    ModelAndView mav = new ModelAndView();
-   mav.setViewName("/question/reply"); // webapp/contents/reply.js
+   
+   int memberno = (Integer)session.getAttribute("memberno");
+   MemberVO memberVO = memberProc.read(memberno);
+   mav.addObject("memberVO", memberVO);
+   if (memberProc.isAdmin(session) == false) {
+     mav.setViewName("redirect:/member/login_need.jsp"); 
+   } else { 
+     mav.setViewName("/question/reply"); // webapp/contents/reply.js
+   }
+   
 
-   MemberVO memberVO = memberProc.read(questionVO.getMemberno());
+   memberVO = memberProc.read(questionVO.getMemberno());
    mav.addObject("memberVO", memberVO);
    
    questionVO = questionProc.read(questionVO.getQuestionno());

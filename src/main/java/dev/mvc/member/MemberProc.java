@@ -56,9 +56,10 @@ public class MemberProc implements MemberProcInter {
     String m_email = (String)session.getAttribute("m_email");
     String m_act = (String)session.getAttribute("m_act");
     
-    if (m_email != null && m_act == "M") {
+    if (m_email != null && m_act.equals("M")) {
       sw = true;
     }
+//    System.out.println("sw: " + sw);
     return sw;
   }
 

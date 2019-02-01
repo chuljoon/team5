@@ -62,9 +62,9 @@ public class ContentsCont {
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);
     
-    int memberno = (Integer)session.getAttribute("memberno");
+    /*int memberno = (Integer)session.getAttribute("memberno");
     MemberVO memberVO = memberProc.read(memberno);
-    mav.addObject("memberVO", memberVO);
+    mav.addObject("memberVO", memberVO);*/
 //    System.out.println("m_act: " + memberVO.getM_act());
 //    System.out.println("m_act: " + memberVO.getM_name());
     
@@ -142,11 +142,11 @@ public class ContentsCont {
   public ModelAndView list(HttpSession session) {
     ModelAndView mav = new ModelAndView();
     
-    int memberno = (Integer)session.getAttribute("memberno");
+    /*int memberno = (Integer)session.getAttribute("memberno");
     MemberVO memberVO = memberProc.read(memberno);
     mav.addObject("memberVO", memberVO);
     System.out.println("list_all_category에서의 memberno: " + memberVO.getMemberno());
-    System.out.println("list_all_category에서의 m_act: " + memberVO.getM_act());
+    System.out.println("list_all_category에서의 m_act: " + memberVO.getM_act());*/
     
     List<ContentsVO> list = contentsProc.list_all_category();
     mav.addObject("list", list);
@@ -217,9 +217,9 @@ public class ContentsCont {
     Categrp_CategoryVO categoryVO = s_categoryProc.read(contentsVO.getS_categoryno());
     mav.addObject("categoryVO", categoryVO);
     
-    int memberno = (Integer)session.getAttribute("memberno");
+    /*int memberno = (Integer)session.getAttribute("memberno");
     MemberVO memberVO = memberProc.read(memberno);
-    mav.addObject("memberVO", memberVO);
+    mav.addObject("memberVO", memberVO);*/
     if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
     } else { 
@@ -314,9 +314,9 @@ public class ContentsCont {
     ContentsVO contentsVO = contentsProc.read(contentsno);
     mav.addObject("contentsVO", contentsVO);
     
-    int memberno = (Integer)session.getAttribute("memberno");
+/*    int memberno = (Integer)session.getAttribute("memberno");
     MemberVO memberVO = memberProc.read(memberno);
-    mav.addObject("memberVO", memberVO);
+    mav.addObject("memberVO", memberVO);*/
 
     if (memberProc.isAdmin(session) == false) {
       mav.setViewName("redirect:/member/login_need.jsp"); 
@@ -422,9 +422,9 @@ public class ContentsCont {
     int search_count = contentsProc.search_count(hashMap);
     mav.addObject("search_count", search_count);
     
-    int memberno = (Integer)session.getAttribute("memberno");
+/*    int memberno = (Integer)session.getAttribute("memberno");
     MemberVO memberVO = memberProc.read(memberno);
-    mav.addObject("memberVO", memberVO);
+    mav.addObject("memberVO", memberVO);*/
     
     Categrp_CategoryVO categoryVO = s_categoryProc.read(s_categoryno);
     mav.addObject("categoryVO", categoryVO);

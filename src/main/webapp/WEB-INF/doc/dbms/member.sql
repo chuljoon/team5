@@ -47,7 +47,7 @@ VALUES ((SELECT NVL(MAX(memberno), 0)+1 as memberno FROM member),
 INSERT INTO member(memberno, m_name, m_nickname, m_email, m_passwd, 
                              m_age, m_act, rdate)
 VALUES ((SELECT NVL(MAX(memberno), 0)+1 as memberno FROM member),
-'우가네', '이지은짱', 'test2@gmail.com', '1113', '25', 'G', sysdate);
+'우가네', '이지은짱', 'test@gmail.com', '1113', '25', 'G', sysdate);
 
 INSERT INTO member(memberno, m_name, m_nickname, m_email, m_passwd, 
                              m_age, m_act, m_thumbs, m_files, m_sizes, rdate)

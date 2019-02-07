@@ -51,60 +51,55 @@
               <div class="item">
                 <div class="block-4 text-center">
                   <figure class="block-4-image">
-                    <img src="images/test_image.png" alt="Image placeholder" class="img-fluid">
+                    <a href="${pageContext.request.contextPath}/contents/read.do?contentsno=1&s_categoryno=1"><img src="images/1.jpg" alt="Image placeholder" class="img-fluid" style="height: 400px; width: 300px;"></a>
                   </figure>
                   <div class="block-4-text p-4">
-                    <h3><a href="#">콘서트 제목</a></h3>
-                    <p class="mb-0">ㅁ</p>
-                    <p class="text-primary font-weight-bold">공연 날짜</p>
+                    <h3><a href="${pageContext.request.contextPath}/contents/read.do?contentsno=1&s_categoryno=1">2018 아이유 10주년 투어 콘서트 〈이 지금 dlwlrma〉－제주</a></h3>
+                    <p class="text-primary font-weight-bold">2019.01.05 ~ 2019.01.05</p>
                   </div>
                 </div>
               </div>
               <div class="item">
                 <div class="block-4 text-center">
                   <figure class="block-4-image">
-                    <img src="images/test_image.png" alt="Image placeholder" class="img-fluid">
+                    <a href="${pageContext.request.contextPath}/contents/read.do?contentsno=5&s_categoryno=7"><img src="images/2.jpg" alt="Image placeholder" class="img-fluid" style="height: 400px; width: 300px;"></a>
                   </figure>
                   <div class="block-4-text p-4">
-                    <h3><a href="#">콘서트 제목</a></h3>
-                    <p class="mb-0">ㅁ</p>
-                    <p class="text-primary font-weight-bold">공연 날짜</p>
+                    <h3><a href="${pageContext.request.contextPath}/contents/read.do?contentsno=5&s_categoryno=7">앤마리 첫 단독 내한공연（ANNE-MARIE 1ST LIVE IN SEOUL）</a></h3>
+                    <p class="text-primary font-weight-bold">2019.04.13 ~ 2019.04.13</p>
                   </div>
                 </div>
               </div>
               <div class="item">
                 <div class="block-4 text-center">
                   <figure class="block-4-image">
-                    <img src="images/test_image.png" alt="Image placeholder" class="img-fluid">
+                    <a href="${pageContext.request.contextPath}/contents/read.do?contentsno=2&s_categoryno=2"><img src="images/3.jpg" alt="Image placeholder" class="img-fluid" style="height: 400px; width: 300px;"></a>
                   </figure>
                   <div class="block-4-text p-4">
-                    <h3><a href="#">콘서트 제목</a></h3>
-                    <p class="mb-0">ㅁ</p>
-                    <p class="text-primary font-weight-bold">공연 날짜</p>
+                    <h3><a href="${pageContext.request.contextPath}/contents/read.do?contentsno=2&s_categoryno=2">VIXX N 팬미팅 2019 〈아！차학연〉</a></h3>
+                    <p class="text-primary font-weight-bold">2019.02.16 ~ 2019.02.17</p>
                   </div>
                 </div>
               </div>
               <div class="item">
                 <div class="block-4 text-center">
                   <figure class="block-4-image">
-                    <img src="images/test_image.png" alt="Image placeholder" class="img-fluid">
+                    <a href="${pageContext.request.contextPath}/contents/read.do?contentsno=6&s_categoryno=5"><img src="images/7.jpg" alt="Image placeholder" class="img-fluid" style="height: 400px; width: 300px;"></a>
                   </figure>
                   <div class="block-4-text p-4">
-                    <h3><a href="#">콘서트 제목</a></h3>
-                    <p class="mb-0">ㅁ</p>
-                    <p class="text-primary font-weight-bold">공연 날짜</p>
+                    <h3><a href="${pageContext.request.contextPath}/contents/read.do?contentsno=6&s_categoryno=5">2019 WORLD DJ FESTIVAL（2019 월드 디제이 페스티벌）</a></h3>
+                    <p class="text-primary font-weight-bold">2019.06.01 ~ 2019.06.01</p>
                   </div>
                 </div>
               </div>
               <div class="item">
                 <div class="block-4 text-center">
                   <figure class="block-4-image">
-                    <img src="images/test_image.png" alt="Image placeholder" class="img-fluid">
+                    <a href="${pageContext.request.contextPath}/contents/read.do?contentsno=7&s_categoryno=3"><img src="images/6.jpg" alt="Image placeholder" class="img-fluid" style="height: 400px; width: 300px;"></a>
                   </figure>
                   <div class="block-4-text p-4">
-                    <h3><a href="#">콘서트 제목</a></h3>
-                    <p class="mb-0">ㅁ</p>
-                    <p class="text-primary font-weight-bold">공연 날짜</p>
+                    <h3><a href="${pageContext.request.contextPath}/contents/read.do?contentsno=7&s_categoryno=3">플라네타리움 레코드（PLT）1st Tour Concert ‘WE GO HOLIC in Seoul’</a></h3>
+                    <p class="text-primary font-weight-bold">2019.03.09 ~ 2019.03.09</p>
                   </div>
                 </div>
               </div>
@@ -123,13 +118,13 @@
         </div>
         <div class="row align-items-center">
           <div class="col-md-12 col-lg-7 mb-5">
-            <a href="#"><img src="images/test_image.png" alt="Image placeholder" class="img-fluid rounded"></a>
+            <img src="images/test.jpg" alt="Image placeholder" class="img-fluid rounded" style="height: 400px; width: 600px;">
           </div>
           <div class="col-md-12 col-lg-5 text-center pl-md-5">
-            <h2><a href="#">콘서트 제목</a></h2>
-            <p class="post-meta mb-4">날 <a href="#">짜</a> <span class="block-8-sep">&bullet;</span> September 3, 2018</p>
-            <p>간단한 설명</p>
-            <p><a href="#" class="btn btn-primary btn-sm">바로가깅!</a></p>
+            <h2>2019 LOVELYZ CONCERT 〈겨울나라의 러블리즈3〉</h2>
+            <p class="post-meta mb-4"><span class="block-8-sep">&bullet;</span> 2019.02.14 ~ 2019.02.17</p>
+            <p>첫눈과 함께 했던 그날을 기억하나요 우리가 함께 맞이할 세 번째 겨울은 또 어떤 모습일까요？ 러블리너스와 러블리즈가 다시 쓰는 2019년 겨울 동화 2019 겨울나라의 러블리즈3</p>
+            <p><a href="${pageContext.request.contextPath}/contents/read.do?contentsno=3&s_categoryno=1" class="btn btn-primary btn-sm">바로가기</a></p>
           </div>
         </div>
       </div>

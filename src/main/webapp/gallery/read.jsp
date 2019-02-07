@@ -72,26 +72,34 @@
 <DIV class='container' style='width: 100%;'>
 <jsp:include page="/menu/top.jsp" flush='false' />
 <DIV class='content'>   
-
-  <ASIDE style='float: right;'>
-    <c:if test="${galleryVO.files.length() > 0 }">
-      <A href='./download.do?galleryno=${galleryVO.galleryno}'>다운로드</A>
-      <span class='menu_divide' >│</span> 
-    </c:if>
-    <A href="javascript:location.reload();">새로고침</A>
-    <span class='menu_divide' >│</span> 
-    <A href='./list.do?'>목록</A>
-<%--     <c:if test="${sessionScope.id ne null }">
-      <span class='menu_divide' >│</span> 
-      <A href='./create.do?categoryno=${categoryVO.categoryno }'>등록</A>
-      <span class='menu_divide' >│</span> 
-      <A href='./reply.do?categoryno=${categoryVO.categoryno }&contentsno=${contentsVO.contentsno }&word=${param.word}&nowPage=${param.nowPage}'>답변</A>
-      <span class='menu_divide' >│</span> 
-      <A href='./update.do?contentsno=${contentsVO.contentsno }&word=${param.word}&nowPage=${param.nowPage}'>수정</A>
-      <span class='menu_divide' >│</span> 
-      <A href='./delete.do?contentsno=${contentsVO.contentsno }&categoryno=${categoryVO.categoryno }&word=${param.word}&nowPage=${param.nowPage}'>삭제</A>
-    </c:if> --%>
-  </ASIDE> 
+  <c:choose>
+    <c:when test="${sessionScope.m_email == 'master@gmail.com'}">
+      <ASIDE style='float: right;'>
+      <c:if test="${galleryVO.files.length() > 0 }">
+        <A href='./download.do?galleryno=${galleryVO.galleryno}'>다운로드</A>
+        <span class='menu_divide' >│</span> 
+      </c:if>
+        <A href="javascript:location.reload();">새로고침</A><span class='menu_divide' >│</span> 
+        <A href='./list.do?'>목록</A>
+      </ASIDE>
+    </c:when>
+    <c:when test="${sessionScope.m_act == 'G'}">
+      <ASIDE style='float: right;'>
+      <c:if test="${galleryVO.files.length() > 0 }">
+        <A href='./download.do?galleryno=${galleryVO.galleryno}'>다운로드</A>
+        <span class='menu_divide' >│</span> 
+      </c:if>
+        <A href="javascript:location.reload();">새로고침</A><span class='menu_divide' >│</span> 
+        <A href='./list.do?'>목록</A>
+      </ASIDE>
+    </c:when>
+    <c:otherwise>
+      <aside style='float: right;'> 
+        <A href="javascript:location.reload();">새로고침</A><span class='menu_divide' >│</span> 
+        <A href='./list.do?'>목록</A>
+      </aside>
+    </c:otherwise>
+  </c:choose>
    
   <div class='menu_line'></div>
 

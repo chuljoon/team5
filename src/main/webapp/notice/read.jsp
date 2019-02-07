@@ -52,17 +52,25 @@
   <DIV class='container' style='width: 90%;'>
     <jsp:include page="/menu/top.jsp" flush='false' />
     <DIV class='content'>
-
-      <ASIDE style='float: right;'>
-        <A href="javascript:location.reload();">새로고침</A> <span class='menu_divide'>│</span> 
-        <A href='./create.do?noticeno=${noticeVO.noticeno }&nowPage=${param.nowPage }'>등록</A> 
-          <span class='menu_divide'>│</span> 
-          <A href='./list_paging.do?nowPage=${param.nowPage }'>목록</A> 
-          <span class='menu_divide'>│</span> 
-          <A href='./update.do?noticeno=${noticeVO.noticeno }&nowPage=${param.nowPage }'>수정</A> 
-          <span class='menu_divide'>│</span> 
-          <A href='./delete.do?noticeno=${noticeVO.noticeno }&nowPage=${param.nowPage }'>삭제</A>
+      <c:choose>
+        <c:when test="${sessionScope.m_act == 'M' }">
+          <ASIDE style='float: right;'>
+            <A href="javascript:location.reload();">새로고침</A> <span class='menu_divide'>│</span> 
+            <A href='./create.do?noticeno=${noticeVO.noticeno }&nowPage=${param.nowPage }'>등록</A> <span class='menu_divide'>│</span> 
+            <A href='./list_paging.do?nowPage=${param.nowPage }'>목록</A> <span class='menu_divide'>│</span> 
+            <A href='./update.do?noticeno=${noticeVO.noticeno }&nowPage=${param.nowPage }'>수정</A> <span class='menu_divide'>│</span> 
+            <A href='./delete.do?noticeno=${noticeVO.noticeno }&nowPage=${param.nowPage }'>삭제</A>
       </ASIDE>
+        </c:when>
+        <c:otherwise>
+          <ASIDE style='float: right;'>
+            <A href="javascript:location.reload();">새로고침</A> <span class='menu_divide'>│</span>  
+            <A href='./list_paging.do?nowPage=${param.nowPage }'>목록</A>
+           
+          </ASIDE>
+        </c:otherwise>
+      </c:choose>
+      
 
       <div class='menu_line'></div>
 

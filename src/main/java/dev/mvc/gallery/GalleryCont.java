@@ -276,11 +276,9 @@ public class GalleryCont {
  @RequestMapping(value = "/gallery/update.do", method = RequestMethod.GET)
  public ModelAndView update(int galleryno, HttpSession session) {
    ModelAndView mav = new ModelAndView();
-   int memberno = (Integer)session.getAttribute("memberno");
-   MemberVO memberVO = memberProc.read(memberno);
-   mav.addObject("memberVO", memberVO);
-   if (memberProc.isMember(session) == false) {
-     mav.setViewName("/member/login_need_g.jsp");
+
+   if (memberProc.isAdmin(session) == false) {
+     mav.setViewName("redirect:/member/login_need.jsp");
    } else {
      mav.setViewName("/gallery/update"); // /webapp/contents/update.jsp
    }
@@ -425,11 +423,9 @@ public class GalleryCont {
  public ModelAndView delete(int galleryno, HttpSession session) {
    // System.out.println("--> delete() GET executed");
    ModelAndView mav = new ModelAndView();
-   int memberno = (Integer)session.getAttribute("memberno");
-   MemberVO memberVO = memberProc.read(memberno);
-   mav.addObject("memberVO", memberVO);
-   if (memberProc.isMember(session) == false) {
-     mav.setViewName("/member/login_need_g.jsp");
+
+   if (memberProc.isAdmin(session) == false) {
+     mav.setViewName("redirect:/member/login_need.jsp");
    } else {
      mav.setViewName("/gallery/delete"); // /webapp/contents/delete.jsp
    }

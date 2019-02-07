@@ -52,23 +52,30 @@
 <DIV class='container' style='width: 90%;'>
 <jsp:include page="/menu/top.jsp" flush='false' />
 <DIV class='content'>   
- 
-  <ASIDE style='float: left;'>
-    <A href='../sub_category/list.do?m_categrpno=${categoryVO.m_categrpno }'>카테고리</A>
-    <span style='font-size: 1.2em;'>></span>  
-    <A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=1'>${categoryVO.title }</A>
-  </ASIDE>
-  <ASIDE style='float: right;'>
-    <A href="javascript:location.reload();">새로고침</A>
-    <span class='menu_divide' >│</span> 
-    <A href='./create.do?s_categoryno=${categoryVO.s_categoryno }'>등록</A>
-    <span class='menu_divide' >│</span> 
-    <A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage }'>목록</A>
-    <span class='menu_divide' >│</span> 
-    <A href='./update.do?contentsno=${contentsVO.contentsno }&s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage }'>수정</A>
-    <span class='menu_divide' >│</span> 
-    <A href='./delete.do?contentsno=${contentsVO.contentsno }&s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage}'>삭제</A>
-  </ASIDE> 
+  <c:choose>
+    <c:when test="${sessionScope.m_email == 'master@gmail.com'}">
+      <ASIDE style='float: left;'>
+        <A href='../sub_category/list.do?m_categrpno=${categoryVO.m_categrpno }'>카테고리</A>
+        <span style='font-size: 1.2em;'>></span>  
+        <A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=1'>${categoryVO.title }</A>
+      </ASIDE>
+      <ASIDE style='float: right;'>
+        <A href="javascript:location.reload();">새로고침</A><span class='menu_divide' >│</span> 
+        <A href='./create.do?s_categoryno=${categoryVO.s_categoryno }'>등록</A><span class='menu_divide' >│</span> 
+        <A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage }'>목록</A><span class='menu_divide' >│</span> 
+        <A href='./update.do?contentsno=${contentsVO.contentsno }&s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage }'>수정</A><span class='menu_divide' >│</span> 
+        <A href='./delete.do?contentsno=${contentsVO.contentsno }&s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage}'>삭제</A>
+      </ASIDE> 
+    </c:when>
+    <c:otherwise>
+      <ASIDE style='float: right;'>
+        <A href="javascript:location.reload();">새로고침</A><span class='menu_divide' >│</span>  
+        <A href='./list_by_category_paging.do?s_categoryno=${categoryVO.s_categoryno }&word=${param.word}&nowPage=${param.nowPage }'>목록</A>
+      </ASIDE> 
+    </c:otherwise>
+  </c:choose> 
+  
+  
   
   <div class='menu_line'></div>
  

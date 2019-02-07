@@ -30,10 +30,10 @@
                     </c:when>
                     <c:when test="${sessionScope.m_email == 'master@gmail.com' }">
                     <a href='${pageContext.request.contextPath}/member/list.do'><span class="icon icon-view_list" title='회원 리스트'></span></a>
-                    ${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
+                    [관리자]${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
                     </c:when>
                     <c:otherwise>
-                    ${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
+                    [일반회원]${sessionScope.m_email } <a href='${pageContext.request.contextPath}/member/logout.do' >Logout</a>
                     <%-- <a href='${pageContext.request.contextPath}/member/login.do'><span class="icon icon-person"></span></a> --%>
                     </c:otherwise>
                     
@@ -65,13 +65,28 @@
               </ul>
             </li>
             <li><a href='${pageContext.request.contextPath}/gallery/list.do' >갤러리</a>
-            <li class= "has-children"> 
-              <a href='${pageContext.request.contextPath}/question/list.do' >Q/A</a>
-              <ul class= "dropdown"> 
-                <li><a href='${pageContext.request.contextPath}/question/list.do' >전체 질문 목록</a></li>
-                <li><a href='${pageContext.request.contextPath}/question/list_by_member_search_paging.do?memberno=${sessionScope.memberno}&nowPage=1' >1 : 1 문의</a></li>
-              </ul>
-            </li>
+            <c:choose>
+              <c:when test="${sessionScope.m_act == 'M'}">
+                <li class= "has-children"> 
+                  <a href='${pageContext.request.contextPath}/question/list.do' >Q/A</a>
+                  <ul class= "dropdown"> 
+                  <li><a href='${pageContext.request.contextPath}/question/list.do' >전체 질문 목록</a></li>
+                  <li><a href='${pageContext.request.contextPath}/question/list_by_member_search_paging.do?memberno=${sessionScope.memberno}&nowPage=1' >1 : 1 문의</a></li>
+                  </ul>
+                </li>
+              </c:when>
+              <c:when test="${sessionScope.m_act == 'G'}">
+                <li class= "has-children"> 
+                  <a href='${pageContext.request.contextPath}/question/list.do' >Q/A</a>
+                  <ul class= "dropdown"> 
+                  <li><a href='${pageContext.request.contextPath}/question/list.do' >전체 질문 목록</a></li>
+                  <li><a href='${pageContext.request.contextPath}/question/list_by_member_search_paging.do?memberno=${sessionScope.memberno}&nowPage=1' >1 : 1 문의</a></li>
+                  </ul>
+                </li>
+              </c:when>
+              <c:otherwise></c:otherwise>
+            </c:choose>
+            
             <li><a href='${pageContext.request.contextPath}/notice/list_paging.do?nowPage=1' >공지사항</a></li>
             <%-- <li><a href='${pageContext.request.contextPath}/member/list.do' >회원 리스트</a></li> --%>
           </ul>

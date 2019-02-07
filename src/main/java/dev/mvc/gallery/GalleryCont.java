@@ -181,6 +181,7 @@ public class GalleryCont {
 
     GalleryVO galleryVO = galleryProc.read(galleryno);
     mav.addObject("galleryVO", galleryVO);
+    galleryProc.increaseCnt(galleryno);
 
     ArrayList<FileVO> file_list = galleryProc.getThumbs(galleryVO);
 

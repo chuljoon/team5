@@ -57,6 +57,11 @@ public class GalleryDAO implements GalleryDAOInter {
     return sqlSessionTemplate.selectOne("gallery.search_count", hashMap);
   }
 
+  @Override
+  public int increaseCnt(int galleryno) {
+    return sqlSessionTemplate.update("gallery.increaseCnt", galleryno);
+  }
+
 
   
   

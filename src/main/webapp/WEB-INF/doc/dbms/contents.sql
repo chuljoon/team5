@@ -133,4 +133,6 @@ WHERE contentsno=1;
 
 6. ªË¡¶
 DELETE FROM contents
-WHERE contentsno=4;
+WHERE contentsno=1;
+
+DELETE FROM contents;

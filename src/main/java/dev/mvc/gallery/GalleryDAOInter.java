@@ -59,4 +59,11 @@ public interface GalleryDAOInter {
    * @return
    */
   public int search_count(HashMap hashMap);
+  
+  /**
+   * 조회수 증가
+   * @param galleryno
+   * @return
+   */
+  public int increaseCnt(int galleryno);
 }

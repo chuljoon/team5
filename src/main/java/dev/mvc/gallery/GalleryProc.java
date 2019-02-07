@@ -117,6 +117,12 @@ ArrayList<FileVO> file_list = new ArrayList<FileVO>();
   public int search_count(HashMap hashMap) {
     return galleryDAO.search_count(hashMap);
   }
+
+  @Override
+  public int increaseCnt(int galleryno) {
+    return galleryDAO.increaseCnt(galleryno);
+  }
+  
   
   
 }

@@ -42,6 +42,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     DELETE FROM gallery
     WHERE galleryno=#{galleryno}
   </delete>
+  
+  <update id="increaseCnt" parameterType="int">
+    UPDATE gallery
+    SET g_cnt = g_cnt + 1
+    WHERE galleryno = #{galleryno}
+  </update>
 
 
 </mapper>

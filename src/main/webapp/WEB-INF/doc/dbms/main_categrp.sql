@@ -7,7 +7,6 @@ DROP TABLE main_categrp;
 1. 테이블 생성
 CREATE TABLE main_categrp(
     m_categrpno                         NUMBER(10)     NOT NULL    PRIMARY KEY,
---  classification                    CHAR(1)    DEFAULT 1     NOT NULL,
     name                              VARCHAR2(50)     NOT NULL,
     seqno                             NUMBER(7)    DEFAULT 0     NOT NULL,
     visible                           CHAR(1)    DEFAULT 'Y'     NOT NULL,
@@ -16,7 +15,6 @@ CREATE TABLE main_categrp(
 
 COMMENT ON TABLE main_categrp is '메인 카테고리 그룹';
 COMMENT ON COLUMN main_categrp.m_categrpno is '메인 카테고리 그룹 번호';
--- COMMENT ON COLUMN main_categrp.classification is '메인 카테고리 그룹 분류';
 COMMENT ON COLUMN main_categrp.name is '이름';
 COMMENT ON COLUMN main_categrp.seqno is '출력 순서';
 COMMENT ON COLUMN main_categrp.visible is '출력 모드';

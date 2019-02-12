@@ -27,7 +27,6 @@ CREATE TABLE contents(
 COMMENT ON TABLE contents is '공연정보';
 COMMENT ON COLUMN contents.contentsno is '공연정보 번호';
 COMMENT ON COLUMN contents.s_categoryno is '서브 카테고리 번호';
-COMMENT ON COLUMN contents.hallno is '공연장 번호';
 COMMENT ON COLUMN contents.title is '공연명';
 COMMENT ON COLUMN contents.title_img is '공연포스터';
 COMMENT ON COLUMN contents.thumbs is '썸네일';
